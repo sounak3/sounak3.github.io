@@ -25,7 +25,7 @@
             nContentOpacity: 0.8,
             strCaptionCol: '#555555',
             nCaptionOpacity: 1.0,
-            nCaptionType: 1,
+            nCaptionType: 2,
             bCaptionCount: true,
             strCaptionFontType: 'Tahoma,Serif',
             strCaptionFontCol: '#ffffff',
@@ -180,16 +180,12 @@
         var m_nMouseOverPos = 0;
 
         var m_nBrowser = eBrowser.Opera;
-        if( jQuery.browser.mozilla )
-            m_nBrowser = eBrowser.Mozilla;
-        if( jQuery.browser.msie )
-            m_nBrowser = eBrowser.Msie;
-        else if( /chrome/.test( navigator.userAgent.toLowerCase() ) )
+        if( /chrome/.test( navigator.userAgent.toLowerCase() ) )
             m_nBrowser = eBrowser.Chrome;
         else if( jQuery.browser.safari )
             m_nBrowser = eBrowser.Safari;
 
-        var m_bPngHack = ( jQuery.browser.msie && jQuery.browser.version < 7 );
+        const m_bPngHack = false;
 
         //-----------------------------------
         // Initialise gallery
