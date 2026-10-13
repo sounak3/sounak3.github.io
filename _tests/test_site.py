@@ -176,3 +176,41 @@ def test_indiangold_sidebar_without_java_and_7zip():
 
 def test_planethour_intro_mentions_desktop():
     assert "app for desktop computers and feature phones" in read("planethour.html")
+
+
+# --- Screenshot galleries open in a slideshow popup (2026-10-14) ---
+GALLERY_COUNTS = {"indiangold.html": 3, "planethour.html": 6, "deskstop.html": 7}
+THUMB_RE = re.compile(
+    r'<a class="ss-thumb" href="(wpimages/[^"]+)" data-gallery="[a-z]+" data-caption="[^"]+">'
+    r'<img src="(wpimages/[^"]+)"')
+
+
+@pytest.mark.parametrize("page", GALLERY_COUNTS)
+def test_gallery_uses_slideshow(page):
+    html = read(page)
+    thumbs = THUMB_RE.findall(html)
+    assert len(thumbs) == GALLERY_COUNTS[page]
+    for full, thumb in thumbs:
+        assert (ROOT / full).is_file() and (ROOT / thumb).is_file(), (full, thumb)
+    assert '<script type="text/javascript" src="wpscripts/slideshow.js"></script>' in html
+    assert "wplightbox" not in html and 'rel="wplbox' not in html
+
+
+def test_slideshow_script_handles_keys_and_autoplay():
+    js = read("wpscripts/slideshow.js")
+    for needle in ("ArrowLeft", "ArrowRight", "Escape", "setInterval", "ss-overlay", "touchstart"):
+        assert needle in js, needle
+
+
+def test_new_app_screenshots():
+    ig, ph = read("indiangold.html"), read("planethour.html")
+    for name in ("ig-main", "ig-settings-units", "ig-settings-rates"):
+        assert f"wpimages/{name}.png" in ig
+    for name in ("ph-expanded", "ph-compact", "ph-settings"):
+        assert f"wpimages/{name}.png" in ph
+
+
+def test_indiangold_new_features_current():
+    html = read("indiangold.html")
+    assert "New in v5.0:" in html
+    assert "Provision to show / hide weight unit" not in html
