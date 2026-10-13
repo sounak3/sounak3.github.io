@@ -12,7 +12,6 @@
 <meta http-equiv="Content-Language" content="en-us">
 <script type="text/javascript" src="wpscripts/jsFlashVer.js"></script>
 <script type="text/javascript" src="wpscripts/jquery-3.7.1.js"></script>
-<script type="text/javascript" src="wpscripts/jquery.wplightbox.js"></script>
 <style type="text/css">
 body {margin: 0px; padding: 0px;}
 .Title-P
@@ -104,25 +103,15 @@ document.getElementById('pic_16').addEventListener('load', OnLoadPngFix);
 <script type="text/javascript">var blankSrc = "wpscripts/blank.gif";
 </script>
 
-<script type="text/javascript">
-$(document).ready(function() {
-
-$('a[rel*=wplbox_pg_3]').wplightbox({ 
-	strImgDir: 'wpimages/',
-	strScriptDir: 'wpscripts/',
-	strBkgrndCol: '#000000', 
-	strContentCol: '#ffffff', 
-	strCaptionCol: '#555555', 
-	strCaptionFontCol: '#ffffff', 
-	nPlayPeriod: 4000,  
-	nButtonType: 2, 
-	nBorderType: 6 
-});
-
-})
-</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4004723948464629"
      crossorigin="anonymous"></script>
+<style type="text/css">
+/* OS download icons behave like buttons */
+.os-btn {position:absolute; display:block; border-radius:8px; transition:transform .15s ease, box-shadow .15s ease, background-color .15s ease;}
+.os-btn img {display:block; border:0;}
+.os-btn:hover, .os-btn:focus {background-color:#ffffff; box-shadow:0 2px 8px rgba(0,0,0,.35); transform:translateY(-2px) scale(1.1); outline:none;}
+.os-btn:active {transform:translateY(0) scale(1.02); box-shadow:0 1px 3px rgba(0,0,0,.35);}
+</style>
 </head>
 
 <body style="background-color:#ffe5e0; text-align:center; height:1328px;">
@@ -191,13 +180,12 @@ $('a[rel*=wplbox_pg_3]').wplightbox({
 <p class="Wp-Body-P"><span class="Body-C-C5">Click to view screen shots</span></p>
 </div>
 <a href="https://github.com/sounak3/desktime/releases/latest" id="btn_2" class="Button4" style="position:absolute;left:50px;top:510px;width:139px;height:38px;"><span>Download</span></a>
-<map id="map1" name="map1">
-    <area shape="poly" coords="141,42,145,36,142,30,140,24,138,21,139,21,137,12,134,10,124,10,123,18,121,25,118,32,114,34,115,36,114,42,122,44,130,42,136,43,140,44" href="https://github.com/sounak3/desktime/releases/download/1.1/deskstop_1.1-release_amd64.deb" alt="Ubuntu">
-    <area shape="poly" coords="83,42,90,41,91,34,94,27,95,19,96,14,89,15,87,16,80,12,77,10,69,12,66,18,64,26,62,33,61,38,65,39,69,37,75,41,80,43" href="https://github.com/sounak3/desktime/releases/download/1.1/DeskStop-1.1.msi" alt="Windows">
-    <area shape="poly" coords="178,41,178,39,187,39,187,23,186,17,186,13,180,16,177,11,171,14,170,15,157,15,157,39,172,39,178,42" href="https://github.com/sounak3/desktime/releases/download/1.1/DeskStop-1.1.dmg" alt="macOS">
-    <area shape="poly" coords="46,43,45,38,46,29,46,21,45,13,43,9,11,9,9,14,8,19,9,25,9,39,11,44,42,44" href="https://github.com/sounak3/desktime" alt="GitHub repository">
-</map>
-<img src="wpimages/os-icons-github.png" width="199" height="54" border="0" id="pic_16" alt="" usemap="#map1" style="position:absolute;left:230px;top:500px;">
+<div class="os-icons" style="position:absolute;left:230px;top:500px;width:199px;height:54px;">
+    <a class="os-btn" href="https://github.com/sounak3/desktime" title="View the source code on GitHub" style="left:6px;top:6px;width:42px;height:41px;"><img src="wpimages/os-github.png" width="42" height="41" alt="GitHub repository"></a>
+    <a class="os-btn" href="https://github.com/sounak3/desktime/releases/download/1.1/DeskStop-1.1.msi" title="Download for Windows (.msi)" style="left:58px;top:7px;width:41px;height:39px;"><img src="wpimages/os-windows.png" width="41" height="39" alt="Windows"></a>
+    <a class="os-btn" href="https://github.com/sounak3/desktime/releases/download/1.1/deskstop_1.1-release_amd64.deb" title="Download for Ubuntu / Debian (.deb)" style="left:111px;top:6px;width:37px;height:41px;"><img src="wpimages/os-linux.png" width="37" height="41" alt="Ubuntu"></a>
+    <a class="os-btn" href="https://github.com/sounak3/desktime/releases/download/1.1/DeskStop-1.1.dmg" title="Download for macOS (.dmg)" style="left:154px;top:8px;width:36px;height:38px;"><img src="wpimages/os-macos.png" width="36" height="38" alt="macOS"></a>
+</div>
 <div id="frag_2" style="position:absolute;left:30px;top:700px;width:500px;height:20px;overflow:hidden;">
     <img src="wpimages/wp342731aa_06.png" width="133" height="21" border="0" id="art_4" title="" alt="Your Comments">
     <div class="fb-like" data-href="https://sounaks.com/deskstop.html" data-width="450" data-layout="button_count" data-action="" data-size="" data-share="true"></div>
@@ -206,14 +194,15 @@ $('a[rel*=wplbox_pg_3]').wplightbox({
     <div class="fb-comments" data-href="https://sounaks.com/deskstop.html" data-width="677" data-numposts="10"></div>
 </div>
 <div id="wp_gallery_pg_3" style="position:absolute; left:748px; top:188px; width:200px; height:320px; overflow:hidden;">
-<div style="position:absolute; left:13px; top:5px; width:73px; height:90px;"><a href="wpimages/clock.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/clock.png" width="73px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
-<div style="position:absolute; left:114px; top:5px; width:72px; height:90px;"><a href="wpimages/trans_clock.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/trans_clock.png" width="72px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
-<div style="position:absolute; left:5px; top:105px; width:90px; height:90px;"><a href="wpimages/multi_tz_clock.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/multi_tz_clock.png" width="90px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
-<div style="position:absolute; left:114px; top:105px; width:72px; height:90px;"><a href="wpimages/clock_nature.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/clock_nature.png" width="72px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
-<div style="position:absolute; left:14px; top:205px; width:72px; height:90px;"><a href="wpimages/clock_multi.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/clock_multi.png" width="72px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
-<div style="position:absolute; left:105px; top:212px; width:90px; height:76px;"><a href="wpimages/background_set.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/background_set.png" width="90px" height="76px" border="0" title="" alt="DeskStop screenshot"></a></div>
-<div style="position:absolute; left:5px; top:305px; width:180px; height:90px;"><a href="wpimages/time_opts.png" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/time_opts.png" width="180px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:13px; top:5px; width:73px; height:90px;"><a class="ss-thumb" href="wpimages/clock.png" data-gallery="deskstop" data-caption="Analog clock with up-time and pomodoro labels"><img src="wpimages/clock.png" width="73px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:114px; top:5px; width:72px; height:90px;"><a class="ss-thumb" href="wpimages/trans_clock.png" data-gallery="deskstop" data-caption="Transparent clock over other windows"><img src="wpimages/trans_clock.png" width="72px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:5px; top:105px; width:90px; height:90px;"><a class="ss-thumb" href="wpimages/multi_tz_clock.png" data-gallery="deskstop" data-caption="Clocks for several time zones"><img src="wpimages/multi_tz_clock.png" width="90px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:114px; top:105px; width:72px; height:90px;"><a class="ss-thumb" href="wpimages/clock_nature.png" data-gallery="deskstop" data-caption="Clock with a custom background"><img src="wpimages/clock_nature.png" width="72px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:14px; top:205px; width:72px; height:90px;"><a class="ss-thumb" href="wpimages/clock_multi.png" data-gallery="deskstop" data-caption="Several clocks on the desktop"><img src="wpimages/clock_multi.png" width="72px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:105px; top:212px; width:90px; height:76px;"><a class="ss-thumb" href="wpimages/background_set.png" data-gallery="deskstop" data-caption="Preferences: background and foreground"><img src="wpimages/background_set.png" width="90px" height="76px" border="0" title="" alt="DeskStop screenshot"></a></div>
+<div style="position:absolute; left:5px; top:305px; width:180px; height:90px;"><a class="ss-thumb" href="wpimages/time_opts.png" data-gallery="deskstop" data-caption="Preferences: time display options"><img src="wpimages/time_opts.png" width="180px" height="90px" border="0" title="" alt="DeskStop screenshot"></a></div>
 </div>
 </div>
+<script type="text/javascript" src="wpscripts/slideshow.js"></script>
 </body>
 </html>

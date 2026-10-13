@@ -1,5 +1,6 @@
 """Static checks for sounaks.com. Run: pytest -q _tests
 (Folders starting with "_" are not published by GitHub Pages.)"""
+import re
 from pathlib import Path
 
 import pytest
@@ -85,21 +86,34 @@ def test_download_button_opens_latest_release(page):
     assert f'href="{GH}/{repo}/releases/latest"' in read(page)
 
 
+def icon_link(html, url, img, alt):
+    pattern = (r'<a class="os-btn" href="' + re.escape(url) + r'"[^>]*>\s*'
+               r'<img src="wpimages/' + re.escape(img) + r'"[^>]*alt="' + re.escape(alt) + '"')
+    return re.search(pattern, html) is not None
+
+
 @pytest.mark.parametrize("page", APPS)
 def test_os_icons_download_release_files(page):
     repo, tag, msi, dmg, deb = APPS[page]
     html = read(page)
-    for name, alt in ((msi, "Windows"), (dmg, "macOS"), (deb, "Ubuntu")):
-        assert f'href="{GH}/{repo}/releases/download/{tag}/{name}" alt="{alt}"' in html
+    base = f"{GH}/{repo}/releases/download/{tag}"
+    assert icon_link(html, f"{base}/{msi}", "os-windows.png", "Windows")
+    assert icon_link(html, f"{base}/{dmg}", "os-macos.png", "macOS")
+    assert icon_link(html, f"{base}/{deb}", "os-linux.png", "Ubuntu")
 
 
 @pytest.mark.parametrize("page", APPS)
 def test_octocat_icon_links_repository(page):
     repo = APPS[page][0]
     html = read(page)
-    assert f'href="{GH}/{repo}" alt="GitHub repository"' in html
-    assert "wpimages/os-icons-github.png" in html
-    assert "wpimages/wp69df82fc_06.png" not in html
+    assert icon_link(html, f"{GH}/{repo}", "os-github.png", "GitHub repository")
+    assert "wp69df82fc_06.png" not in html and "os-icons-github.png" not in html
+
+
+@pytest.mark.parametrize("page", APPS)
+def test_os_icons_behave_like_buttons(page):
+    html = read(page)
+    assert ".os-btn:hover" in html
 
 
 @pytest.mark.parametrize("page", APPS)
@@ -124,5 +138,79 @@ def test_planethour_keeps_phone_downloads():
     assert "PlanetHour v2.0 for Desktop" in html
 
 
-def test_os_icon_image_exists():
-    assert (ROOT / "wpimages" / "os-icons-github.png").is_file()
+def test_os_icon_images_exist():
+    for name in ("github", "windows", "linux", "macos"):
+        assert (ROOT / "wpimages" / f"os-{name}.png").is_file()
+
+
+# --- Content updates (2026-10-14) ---
+def test_index_shows_latest_versions():
+    html = read("index.html")
+    for current in ("PlanetHour v2.0", "DeskStop v1.1", "IndianGold v5.0"):
+        assert html.count(current) == 2, current
+    for old in ("PlanetHour v1.0", "DeskStop v1.0", "IndianGold v3.0"):
+        assert old not in html
+
+
+def test_index_indiangold_news_links_indiangold_page():
+    assert '<a href="indiangold.html" style="text-decoration:underline;">IndianGold v5.0 released!</a>' in read("index.html")
+
+
+def test_contact_email():
+    assert 'href="mailto:admin@sounaks.com"' in read("contact.html")
+    for page in PAGES:
+        assert "hotmail" not in read(page), page
+
+
+def test_indiangold_heading_without_version():
+    html = read("indiangold.html")
+    assert 'src="wpimages/indiangold-heading.png"' in html
+    assert 'alt="IndianGold v3.0"' not in html
+
+
+def test_indiangold_sidebar_without_java_and_7zip():
+    html = read("indiangold.html")
+    assert "java.com" not in html and "7-zip.org" not in html
+    assert 'src="wpimages/indiangold-sidebar.png"' in html
+
+
+def test_planethour_intro_mentions_desktop():
+    assert "app for desktop computers and feature phones" in read("planethour.html")
+
+
+# --- Screenshot galleries open in a slideshow popup (2026-10-14) ---
+GALLERY_COUNTS = {"indiangold.html": 3, "planethour.html": 6, "deskstop.html": 7}
+THUMB_RE = re.compile(
+    r'<a class="ss-thumb" href="(wpimages/[^"]+)" data-gallery="[a-z]+" data-caption="[^"]+">'
+    r'<img src="(wpimages/[^"]+)"')
+
+
+@pytest.mark.parametrize("page", GALLERY_COUNTS)
+def test_gallery_uses_slideshow(page):
+    html = read(page)
+    thumbs = THUMB_RE.findall(html)
+    assert len(thumbs) == GALLERY_COUNTS[page]
+    for full, thumb in thumbs:
+        assert (ROOT / full).is_file() and (ROOT / thumb).is_file(), (full, thumb)
+    assert '<script type="text/javascript" src="wpscripts/slideshow.js"></script>' in html
+    assert "wplightbox" not in html and 'rel="wplbox' not in html
+
+
+def test_slideshow_script_handles_keys_and_autoplay():
+    js = read("wpscripts/slideshow.js")
+    for needle in ("ArrowLeft", "ArrowRight", "Escape", "setInterval", "ss-overlay", "touchstart"):
+        assert needle in js, needle
+
+
+def test_new_app_screenshots():
+    ig, ph = read("indiangold.html"), read("planethour.html")
+    for name in ("ig-main", "ig-settings-units", "ig-settings-rates"):
+        assert f"wpimages/{name}.png" in ig
+    for name in ("ph-expanded", "ph-compact", "ph-settings"):
+        assert f"wpimages/{name}.png" in ph
+
+
+def test_indiangold_new_features_current():
+    html = read("indiangold.html")
+    assert "New in v5.0:" in html
+    assert "Provision to show / hide weight unit" not in html
