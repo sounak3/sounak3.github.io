@@ -12,7 +12,6 @@
 <meta http-equiv="Content-Language" content="en-us">
 <script type="text/javascript" src="wpscripts/jsFlashVer.js"></script>
 <script type="text/javascript" src="wpscripts/jquery-3.7.1.js"></script>
-<script type="text/javascript" src="wpscripts/jquery.wplightbox.js"></script>
 <style type="text/css">
 body {margin: 0px; padding: 0px;}
 .Title-P
@@ -98,23 +97,6 @@ body {margin: 0px; padding: 0px;}
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4004723948464629"
      crossorigin="anonymous"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-
-$('a[rel*=wplbox_pg_3]').wplightbox({ 
-	strImgDir: 'wpimages/',
-	strScriptDir: 'wpscripts/',
-	strBkgrndCol: '#000000', 
-	strContentCol: '#ffffff', 
-	strCaptionCol: '#555555', 
-	strCaptionFontCol: '#ffffff', 
-	nPlayPeriod: 4000,  
-	nButtonType: 2, 
-	nBorderType: 6 
-});
-
-})
-</script>
 <script type="text/javascript" src="wpscripts/jspngfix.js">
     document.getElementById('txt_151').addEventListener('load', OnLoadPngFix);
     document.getElementById('qs_36').addEventListener('load', OnLoadPngFix);
@@ -123,6 +105,13 @@ $('a[rel*=wplbox_pg_3]').wplightbox({
     document.getElementById('pcrv_638').addEventListener('load', OnLoadPngFix);
     document.getElementById('art_5').addEventListener('load', OnLoadPngFix);
 </script>
+<style type="text/css">
+/* OS download icons behave like buttons */
+.os-btn {position:absolute; display:block; border-radius:8px; transition:transform .15s ease, box-shadow .15s ease, background-color .15s ease;}
+.os-btn img {display:block; border:0;}
+.os-btn:hover, .os-btn:focus {background-color:#ffffff; box-shadow:0 2px 8px rgba(0,0,0,.35); transform:translateY(-2px) scale(1.1); outline:none;}
+.os-btn:active {transform:translateY(0) scale(1.02); box-shadow:0 1px 3px rgba(0,0,0,.35);}
+</style>
 </head>
 
 <body style="background-color:#ffe5e0; text-align:center; height:1392px;">
@@ -167,7 +156,7 @@ $('a[rel*=wplbox_pg_3]').wplightbox({
 </div>
 <img src="wpimages/wpa85141fa_06.png" width="679" height="2" border="0" id="pcrv_638" alt="" style="position:absolute;left:31px;top:571px;">
 <div id="txt_13" style="position:absolute;left:30px;top:147px;width:680px;height:424px;overflow:hidden;">
-<p class="Body-P"><span class="Body-C-C3">PlanetHour</span><span class="Body-C"> is a planetary hour / &#39;grah hora&#39; app for feature phones. It differs from other software
+<p class="Body-P"><span class="Body-C-C3">PlanetHour</span><span class="Body-C"> is a planetary hour / &#39;grah hora&#39; app for desktop computers and feature phones. It differs from other software
     of the category that it displays </span><span class="Body-C-C4">Chaldean planetary hour / Grah hora along with vedic
     Rahu kaal, Gulika kaal and Yamakataka kaal</span><span class="Body-C">. On selecting a particular planet, a list
     of regular tasks which are favorable for the planet, will be displayed.</span></p>
@@ -209,13 +198,12 @@ $('a[rel*=wplbox_pg_3]').wplightbox({
     <span class="Artistic-Body-C">PlanetHour v2.0 for Desktop:</span>
 	<a href="https://github.com/sounak3/planethour/releases/latest" id="btn_4" class="Button4" style="position:absolute;left:340px;top:-10px;width:139px;height:38px;"><span>Download</span></a>
 </div>
-<map id="map_os" name="map_os">
-    <area shape="poly" coords="141,42,145,36,142,30,140,24,138,21,139,21,137,12,134,10,124,10,123,18,121,25,118,32,114,34,115,36,114,42,122,44,130,42,136,43,140,44" href="https://github.com/sounak3/planethour/releases/download/v2.0/planethour_2.0-release_amd64.deb" alt="Ubuntu">
-    <area shape="poly" coords="83,42,90,41,91,34,94,27,95,19,96,14,89,15,87,16,80,12,77,10,69,12,66,18,64,26,62,33,61,38,65,39,69,37,75,41,80,43" href="https://github.com/sounak3/planethour/releases/download/v2.0/PlanetHour-2.0.msi" alt="Windows">
-    <area shape="poly" coords="178,41,178,39,187,39,187,23,186,17,186,13,180,16,177,11,171,14,170,15,157,15,157,39,172,39,178,42" href="https://github.com/sounak3/planethour/releases/download/v2.0/PlanetHour-2.0.dmg" alt="macOS">
-    <area shape="poly" coords="46,43,45,38,46,29,46,21,45,13,43,9,11,9,9,14,8,19,9,25,9,39,11,44,42,44" href="https://github.com/sounak3/planethour" alt="GitHub repository">
-</map>
-<img src="wpimages/os-icons-github.png" width="199" height="54" border="0" id="pic_17" alt="" usemap="#map_os" style="position:absolute;left:150px;top:630px;">
+<div class="os-icons" style="position:absolute;left:150px;top:630px;width:199px;height:54px;">
+    <a class="os-btn" href="https://github.com/sounak3/planethour" title="View the source code on GitHub" style="left:6px;top:6px;width:42px;height:41px;"><img src="wpimages/os-github.png" width="42" height="41" alt="GitHub repository"></a>
+    <a class="os-btn" href="https://github.com/sounak3/planethour/releases/download/v2.0/PlanetHour-2.0.msi" title="Download for Windows (.msi)" style="left:58px;top:7px;width:41px;height:39px;"><img src="wpimages/os-windows.png" width="41" height="39" alt="Windows"></a>
+    <a class="os-btn" href="https://github.com/sounak3/planethour/releases/download/v2.0/planethour_2.0-release_amd64.deb" title="Download for Ubuntu / Debian (.deb)" style="left:111px;top:6px;width:37px;height:41px;"><img src="wpimages/os-linux.png" width="37" height="41" alt="Ubuntu"></a>
+    <a class="os-btn" href="https://github.com/sounak3/planethour/releases/download/v2.0/PlanetHour-2.0.dmg" title="Download for macOS (.dmg)" style="left:154px;top:8px;width:36px;height:38px;"><img src="wpimages/os-macos.png" width="36" height="38" alt="macOS"></a>
+</div>
 <div id="art_6" style="position:absolute;left:38px;top:700px;width: 400px; height:17px;">
     <span class="Artistic-Body-C">Planethour v1.0 for Mobile (Feature phones):</span>
 	<a href="sw/planethour.jar" id="btn_1" class="Button4" style="position:absolute;left:340px;top:-10px;width:139px;height:38px;"><span>Download</span></a>
@@ -240,13 +228,14 @@ $('a[rel*=wplbox_pg_3]').wplightbox({
     <div class="fb-comments" [attr.data-href]="url" data-href="https://sounaks.com/planethour.html" data-width="650" data-numposts="5"></div>
 </div>
 <div id="wp_gallery_pg_3" style="position:absolute; left:748px; top:188px; width:200px; height:320px; overflow:hidden;">
-<div style="position:absolute; left:13px; top:5px; width:73px; height:90px;"><a href="wpimages/6742cdfe29f.jpg" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/6742cdfe29ft.jpg" width="73px" height="90px" border="0" title=""></a></div>
-<div style="position:absolute; left:114px; top:5px; width:72px; height:90px;"><a href="wpimages/c11cab66ad3e.jpg" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/c11cab66ad3et.jpg" width="72px" height="90px" border="0" title=""></a></div>
-<div style="position:absolute; left:5px; top:105px; width:90px; height:90px;"><a href="wpimages/32ec5621146a.jpg" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/32ec5621146at.jpg" width="90px" height="90px" border="0" title=""></a></div>
-<div style="position:absolute; left:114px; top:105px; width:72px; height:90px;"><a href="wpimages/f1af4760f5a1.jpg" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/f1af4760f5a1t.jpg" width="72px" height="90px" border="0" title=""></a></div>
-<div style="position:absolute; left:14px; top:205px; width:72px; height:90px;"><a href="wpimages/d21c3cf39a7.jpg" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/d21c3cf39a7t.jpg" width="72px" height="90px" border="0" title=""></a></div>
-<div style="position:absolute; left:105px; top:212px; width:90px; height:76px;"><a href="wpimages/50bff2d3a6ac.jpg" target="_self" rel="wplbox_pg_3~#~~#~"><img src="wpimages/50bff2d3a6act.jpg" width="90px" height="76px" border="0" title=""></a></div>
+<div style="position:absolute; left:6px; top:5px; width:87px; height:95px;"><a class="ss-thumb" href="wpimages/ph-expanded.png" data-gallery="planethour" data-caption="Click the day line to show the full table of planetary hours"><img src="wpimages/ph-expanded-t.png" width="87" height="95" border="0" alt="Click the day line to show the full table of planetary hours"></a></div>
+<div style="position:absolute; left:105px; top:41px; width:90px; height:22px;"><a class="ss-thumb" href="wpimages/ph-compact.png" data-gallery="planethour" data-caption="Click it again for the compact view"><img src="wpimages/ph-compact-t.png" width="90" height="22" border="0" alt="Click it again for the compact view"></a></div>
+<div style="position:absolute; left:6px; top:110px; width:87px; height:95px;"><a class="ss-thumb" href="wpimages/ph-settings.png" data-gallery="planethour" data-caption="Settings: country, city, coordinates, time zone and date"><img src="wpimages/ph-settings-t.png" width="87" height="95" border="0" alt="Settings: country, city, coordinates, time zone and date"></a></div>
+<div style="position:absolute; left:113px; top:112px; width:73px; height:90px;"><a class="ss-thumb" href="wpimages/6742cdfe29f.jpg" data-gallery="planethour" data-caption="Feature-phone version: start screen"><img src="wpimages/6742cdfe29ft.jpg" width="73" height="90" border="0" alt="Feature-phone version: start screen"></a></div>
+<div style="position:absolute; left:14px; top:217px; width:72px; height:90px;"><a class="ss-thumb" href="wpimages/c11cab66ad3e.jpg" data-gallery="planethour" data-caption="Feature-phone version: day and hour of the planets"><img src="wpimages/c11cab66ad3et.jpg" width="72" height="90" border="0" alt="Feature-phone version: day and hour of the planets"></a></div>
+<div style="position:absolute; left:105px; top:217px; width:90px; height:90px;"><a class="ss-thumb" href="wpimages/32ec5621146a.jpg" data-gallery="planethour" data-caption="Feature-phone version: list of planetary hours"><img src="wpimages/32ec5621146at.jpg" width="90" height="90" border="0" alt="Feature-phone version: list of planetary hours"></a></div>
 </div>
 </div>
+<script type="text/javascript" src="wpscripts/slideshow.js"></script>
 </body>
 </html>
