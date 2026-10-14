@@ -71,7 +71,7 @@ GH = "https://github.com/sounak3"
 APPS = {
     "deskstop.html": ("desktime", "1.1", "DeskStop-1.1.msi", "DeskStop-1.1.dmg", "deskstop_1.1-release_amd64.deb"),
     "indiangold.html": ("indiangold", "5.0", "IndianGold-5.0.msi", "IndianGold-5.0.dmg", "indiangold_5.0-release_amd64.deb"),
-    "planethour.html": ("planethour", "v2.0", "PlanetHour-2.0.msi", "PlanetHour-2.0.dmg", "planethour_2.0-release_amd64.deb"),
+    "planethour.html": ("planethour", "v2.1", "PlanetHour-2.1.msi", "PlanetHour-2.1.dmg", "planethour_2.1-release_amd64.deb"),
 }
 LICENSES = {
     "deskstop.html": f"{GH}/desktime/blob/main/LICENSE.md",
@@ -135,7 +135,7 @@ def test_planethour_keeps_phone_downloads():
     html = read("planethour.html")
     assert 'href="sw/planethour.jar"' in html
     assert 'href="sw/planethour_mini.jar"' in html
-    assert "PlanetHour v2.0 for Desktop" in html
+    assert "PlanetHour v2.1 for Desktop" in html
 
 
 def test_os_icon_images_exist():
@@ -146,9 +146,9 @@ def test_os_icon_images_exist():
 # --- Content updates (2026-10-14) ---
 def test_index_shows_latest_versions():
     html = read("index.html")
-    for current in ("PlanetHour v2.0", "DeskStop v1.1", "IndianGold v5.0"):
+    for current in ("PlanetHour v2.1", "DeskStop v1.1", "IndianGold v5.0"):
         assert html.count(current) == 2, current
-    for old in ("PlanetHour v1.0", "DeskStop v1.0", "IndianGold v3.0"):
+    for old in ("PlanetHour v1.0", "PlanetHour v2.0", "DeskStop v1.0", "IndianGold v3.0"):
         assert old not in html
 
 
@@ -179,7 +179,7 @@ def test_planethour_intro_mentions_desktop():
 
 
 # --- Screenshot galleries open in a slideshow popup (2026-10-14) ---
-GALLERY_COUNTS = {"indiangold.html": 3, "planethour.html": 6, "deskstop.html": 7}
+GALLERY_COUNTS = {"indiangold.html": 3, "planethour.html": 7, "deskstop.html": 7}
 THUMB_RE = re.compile(
     r'<a class="ss-thumb" href="(wpimages/[^"]+)" data-gallery="[a-z]+" data-caption="[^"]+">'
     r'<img src="(wpimages/[^"]+)"')
@@ -206,7 +206,7 @@ def test_new_app_screenshots():
     ig, ph = read("indiangold.html"), read("planethour.html")
     for name in ("ig-main", "ig-settings-units", "ig-settings-rates"):
         assert f"wpimages/{name}.png" in ig
-    for name in ("ph-expanded", "ph-compact", "ph-settings"):
+    for name in ("ph-expanded", "ph-compact", "ph-settings", "ph-about"):
         assert f"wpimages/{name}.png" in ph
 
 
@@ -214,3 +214,54 @@ def test_indiangold_new_features_current():
     html = read("indiangold.html")
     assert "New in v5.0:" in html
     assert "Provision to show / hide weight unit" not in html
+
+
+OLD_SCRIPTS = ["jspngfix.js", "jsFlashVer.js", "jquery-3.7.1.js", "jquery.wplightbox.js", "blank.gif"]
+
+
+@pytest.mark.parametrize("page", PAGES)
+def test_no_obsolete_scripts(page):
+    # IE5.5/6 PNG fix, Flash detection and jQuery (only the old lightbox used it) are gone.
+    html = read(page)
+    for name in OLD_SCRIPTS + ["OnLoadPngFix", "blankSrc"]:
+        assert name not in html, name
+
+
+def test_obsolete_script_files_removed():
+    for name in OLD_SCRIPTS:
+        assert not (ROOT / "wpscripts" / name).exists(), name
+
+
+def test_favicon_files():
+    import struct
+    ico = (ROOT / "favicon.ico").read_bytes()
+    reserved, kind, count = struct.unpack_from("<HHH", ico)
+    assert (reserved, kind) == (0, 1)
+    sizes = {ico[6 + 16 * i] for i in range(count)}
+    assert {16, 32, 48} <= sizes
+    png = (ROOT / "apple-touch-icon.png").read_bytes()
+    assert png[:8] == b"\x89PNG\r\n\x1a\n" and struct.unpack(">II", png[16:24]) == (180, 180)
+
+
+@pytest.mark.parametrize("page", PAGES)
+def test_favicon_links(page):
+    html = read(page)
+    assert '<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">' in html
+    assert '<link rel="apple-touch-icon" href="apple-touch-icon.png">' in html
+
+
+def test_no_unused_dependabot_config():
+    # The site has no package manifests, so Dependabot has nothing to update.
+    assert not (ROOT / ".github" / "dependabot.yaml").exists()
+
+
+def test_planethour_page_has_no_old_desktop_version():
+    html = read("planethour.html")
+    assert "v2.0" not in html and "2.0.msi" not in html
+    assert "Desktop (v2.1)" in html and "PlanetHour v2.1 is free software" in html
+
+
+def test_planethour_gallery_clears_sidebar():
+    # Four rows of thumbnails must end above the "Download PlanetHour Users Manual" link at top:544px.
+    m = re.search(r'id="wp_gallery_pg_3" style="position:absolute; left:748px; top:(\d+)px; width:200px; height:(\d+)px;', read("planethour.html"))
+    assert m and int(m.group(1)) + int(m.group(2)) <= 540
