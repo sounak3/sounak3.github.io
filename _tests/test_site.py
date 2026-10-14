@@ -214,3 +214,42 @@ def test_indiangold_new_features_current():
     html = read("indiangold.html")
     assert "New in v5.0:" in html
     assert "Provision to show / hide weight unit" not in html
+
+
+OLD_SCRIPTS = ["jspngfix.js", "jsFlashVer.js", "jquery-3.7.1.js", "jquery.wplightbox.js", "blank.gif"]
+
+
+@pytest.mark.parametrize("page", PAGES)
+def test_no_obsolete_scripts(page):
+    # IE5.5/6 PNG fix, Flash detection and jQuery (only the old lightbox used it) are gone.
+    html = read(page)
+    for name in OLD_SCRIPTS + ["OnLoadPngFix", "blankSrc"]:
+        assert name not in html, name
+
+
+def test_obsolete_script_files_removed():
+    for name in OLD_SCRIPTS:
+        assert not (ROOT / "wpscripts" / name).exists(), name
+
+
+def test_favicon_files():
+    import struct
+    ico = (ROOT / "favicon.ico").read_bytes()
+    reserved, kind, count = struct.unpack_from("<HHH", ico)
+    assert (reserved, kind) == (0, 1)
+    sizes = {ico[6 + 16 * i] for i in range(count)}
+    assert {16, 32, 48} <= sizes
+    png = (ROOT / "apple-touch-icon.png").read_bytes()
+    assert png[:8] == b"\x89PNG\r\n\x1a\n" and struct.unpack(">II", png[16:24]) == (180, 180)
+
+
+@pytest.mark.parametrize("page", PAGES)
+def test_favicon_links(page):
+    html = read(page)
+    assert '<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">' in html
+    assert '<link rel="apple-touch-icon" href="apple-touch-icon.png">' in html
+
+
+def test_no_unused_dependabot_config():
+    # The site has no package manifests, so Dependabot has nothing to update.
+    assert not (ROOT / ".github" / "dependabot.yaml").exists()
