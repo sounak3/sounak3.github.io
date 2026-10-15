@@ -265,3 +265,34 @@ def test_planethour_gallery_clears_sidebar():
     # Four rows of thumbnails must end above the "Download PlanetHour Users Manual" link at top:544px.
     m = re.search(r'id="wp_gallery_pg_3" style="position:absolute; left:748px; top:(\d+)px; width:200px; height:(\d+)px;', read("planethour.html"))
     assert m and int(m.group(1)) + int(m.group(2)) <= 540
+
+
+# --- Visit statistics (Umami on numerapp.com, 2026-10-15) ---
+UMAMI_TAG = ('<script defer src="https://numerapp.com/s.js" data-website-id="06fc6537-553a-4007-8a9f-8bb31f948812" '
+             'data-host-url="https://numerapp.com" data-domains="sounaks.com" data-do-not-track="true"></script>')
+
+
+@pytest.mark.parametrize("page", PAGES)
+def test_umami_tag_on_every_page(page):
+    html = read(page)
+    assert html.count(UMAMI_TAG) == 1
+    assert html.index(UMAMI_TAG) < html.index("</head>")
+
+
+def test_privacy_visit_statistics():
+    html = read("privacy.html")
+    for phrase in ("<b>Visit statistics.</b>", "an analytics tool that runs on our own server",
+                   "changes every day", "Browsers that send &quot;Do Not Track&quot; are not counted.",
+                   "Last updated: 15 October 2026."):
+        assert phrase in html, phrase
+    assert "This site itself stores no data about you." not in html
+
+
+def test_privacy_layout_fits_text():
+    # WebPlus layout: the text box clips (overflow:hidden), the red band (qs_36) carries the copyright line.
+    html = read("privacy.html")
+    top = lambda el: int(re.search(rf'id="{el}"[^>]*top:(\d+)px', html).group(1))
+    box_h = int(re.search(r'id="txt_153"[^>]*height:(\d+)px', html).group(1))
+    assert 200 + box_h <= top("qs_36") - 10
+    assert top("qs_36") < top("txt_21") < top("qs_36") + 44
+    assert f"height:{top('qs_36') + 44}px;" in html.split("<body", 1)[1].split(">", 1)[0]
