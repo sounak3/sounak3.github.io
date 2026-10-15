@@ -282,7 +282,8 @@ def test_umami_tag_on_every_page(page):
 def test_privacy_visit_statistics():
     html = read("privacy.html")
     for phrase in ("<b>Visit statistics.</b>", "an analytics tool that runs on our own server",
-                   "changes every day", "Browsers that send &quot;Do Not Track&quot; are not counted.",
+                   "changes every day", "the page and its title", "device type, screen size, language and country",
+                   "Browsers that send &quot;Do Not Track&quot; are not counted.",
                    "Last updated: 15 October 2026."):
         assert phrase in html, phrase
     assert "This site itself stores no data about you." not in html
